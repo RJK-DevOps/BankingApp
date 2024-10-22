@@ -33,7 +33,7 @@ pipeline {
                 
             }
         }
-        stage('Publish the Image to Dockerhub') {
+        stage('Publish the Image to DockerHub') {
             steps {
                 echo 'Publish to DockerHub'
 				sh "docker push loksaieta/bankapp-eta-app:latest"                
