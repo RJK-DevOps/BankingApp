@@ -13,10 +13,10 @@
     command : sudo systemctl start docker
 
   - name : stop docker container
-    command : sudo docker stop $(docker ps -f "publish=8084" -q)
+    command : sudo docker stop cont1
 
   - name : remove docker container
-    command : sudo docker rm $(docker ps -f "publish=8084" -q)
+    command : sudo docker rm cont1
 
   - name: Deploy Docker Container
     command: docker run -itd --name cont1 -p 8084:8081 jaya002/web-server:latest
