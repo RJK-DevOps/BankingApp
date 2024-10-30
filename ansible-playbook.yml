@@ -1,22 +1,36 @@
-- name : Configure Docker on EC2 Instances
-  hosts : all
+- name: Configure Docker on EC2 Instances
+  hosts: all
   become: true
-  connection : ssh
-  tasks : 
-  - name: updating apt
-    command : sudo apt-get update
+  connection: ssh
+  tasks:
+    - name: updating apt
+      command: sudo apt-get update
 
-  - name : Install Docker
-    command : sudo apt-get install -y docker.io
+    - name: Install Docker
+      command: sudo apt-get install -y docker.io
 
-  - name : Start Docker Service
-    command : sudo systemctl start docker
+    - name: Start Docker Service
+      command: sudo systemctl start docker
 
-  - name : stop docker container
-    command : sudo docker stop cont1
+    - name: Check if container is running
+      command: docker ps --filter "name=cont" --format "{{.Names}}"
+      register: container_running
+      ignore_errors: yes
 
-  - name : remove docker container
-    command : sudo docker rm cont1
+    - name: Stop docker container if it is running
+      command: sudo docker stop cont
+      when: container_running.stdout == "cont"
+      ignore_errors: yes
 
-  - name: Deploy Docker Container
-    command: docker run -itd --name cont1 -p 8084:8081 jaya002/web-server:latest
+    - name: Check if container exists
+      command: docker ps -a --filter "name=cont" --format "{{.Names}}"
+      register: container_exists
+      ignore_errors: yes
+
+    - name: Remove docker container if it exists
+      command: sudo docker rm cont
+      when: container_exists.stdout == "cont"
+      ignore_errors: yes
+
+    - name: Deploy Docker Container
+      command: docker run -itd --name cont -p 8084:8081 jaya002/web-server:latest
