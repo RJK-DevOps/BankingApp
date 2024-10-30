@@ -12,8 +12,10 @@
   - name : Start Docker Service
     command : sudo systemctl start docker
 
-  - name : remove docker container
+  - name : stop docker container
     command : sudo docker stop $(docker ps --filter "publish=8084" -q)
+
+  - name : remove docker container
     command : sudo docker rm $(docker ps --filter "publish=8084" -q)
 
   - name: Deploy Docker Container
