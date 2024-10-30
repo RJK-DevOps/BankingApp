@@ -19,4 +19,4 @@
     command : sudo docker rm $(docker ps -f "publish=8084" -q)
 
   - name: Deploy Docker Container
-    command: docker run -itd -p 8084:8081 jaya002/web-server:latest
+    command: docker run -itd --name cont1 -p 8084:8081 jaya002/web-server:latest
